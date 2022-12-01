@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 app.use(upload.array());
 
+app.use(express.static('public'));
+
 app.post('/',function(request,response){
     console.log(request.body);
     response.send("Recieved Post Request.");
