@@ -1,30 +1,23 @@
-const express = require('express');
-const server = express();
-const cricketers = require('./cricketers');
-const footballers = require('./footballers');
-const serverPort = 6655;
+var express = require('express');
+const path = require('path');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
+var app = express();
 
-var universalRoute = server.route('/');
+app.set("views", path.join(__dirname));
+app.set("view engine", "ejs");
 
-universalRoute.get((request,response)=>{
-    response.send("This is universal route using get");
-})
-.post((request,response)=>{
-    response.send("This is universal route using post");
+app.get('/', (request, response)=>{
+    response.render('loginForm');
 });
 
-server.use('/',cricketers);
-server.use('/',footballers);
+// xwww-
+app.use(bodyParser.urlencoded({extended : true}));
 
+app.use(upload.array());
 
-
-server.listen(serverPort, (error)=>{
-    if(!error)
-    {
-        console.log("Server is started at : "+serverPort);
-    }
-    else
-    {
-        console.log("Server encountered an error : "+error+", while starting.");
-    }
+app.post('/',function(request,response){
+    console.log(request.body);
+    response.send("Recieved Post Request.");
 });
