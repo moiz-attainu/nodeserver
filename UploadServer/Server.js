@@ -1,29 +1,24 @@
 const express = require('express');
-const app = express();
+const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
+const app = express();
 const serverPort = 6677;
-const itemsRouter = require('./items');
-app.use(express.json());
-app.use('/items',itemsRouter);
+
+
+app.set("views", "./views");
+app.set("view engine", "ejs");
+
+app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended : true}));
 
-app.route('/').get(function(request,response){
-    response.status(200);
-    response.send("got a get request on universal route.");
-}).post(function(request,response){
-    response.status(200);
-    response.send("got a post request on universal route.");
-});
-
-
-app.listen(serverPort, function(error){
-    if(error)
+app.listen(serverPort, (error)=>{
+    if(!error)
     {
-        console.log("Server did not start because of :"+error);
+        console.log("Server is started at :  "+serverPort);
     }
     else
     {
-        console.log("Server has started and is listening at port : "+serverPort);
+        console.log("Server encountered an error : "+error+", while starting.");
     }
 });
 
